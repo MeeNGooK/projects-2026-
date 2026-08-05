@@ -11,11 +11,12 @@
   <link rel="stylesheet" href="./extras3.css" />
   <link rel="stylesheet" href="./extras4.css" />
   <link rel="stylesheet" href="./extras5.css" />
+  <link rel="stylesheet" href="./extras6.css" />
 </head>
 <body>
   <button class="reset" id="reset" title="처음부터 다시 등록하기">↺ <span>테스트 초기화</span></button>
   <main class="experience" id="experience" tabindex="0">
-    <header class="hud"><a class="brand" href="#">side<span>by</span>side</a><p>오늘, 더 넓게 만나보세요</p><button class="profile-dot" aria-label="내 프로필">ME</button></header>
+    <header class="hud"><a class="brand" href="#">side<span>by</span>side</a><p>오늘, 더 넓게 만나보세요</p><button class="profile-dot" id="meButton" aria-label="내 프로필">ME</button></header>
     <section class="full-screen" id="screen" aria-live="polite"></section>
     <div class="direction-cue left" id="cueLeft"><b>←</b><span>LEFT</span><strong>콘텐츠</strong></div>
     <div class="direction-cue right" id="cueRight"><b>→</b><span>RIGHT</span><strong>새 인연</strong></div>
@@ -38,6 +39,7 @@
     <div class="agent-card"><div class="agent-orb">✦</div><p class="agent-kicker">SIDE BY SIDE AI AGENT</p><h2 id="agentTitle">특가 예약을 준비하고 있어요</h2><div class="agent-steps" id="agentSteps"></div><button class="agent-close hidden" id="agentClose">확인했어요</button></div>
   </section>
   <section class="rating-sheet hidden" id="ratingSheet" aria-label="평점 남기기"><div class="rating-head"><strong>이용 경험은 어땠나요?</strong><button id="closeRating" aria-label="닫기">×</button></div><p id="ratingTarget">이용권</p><div class="rating-stars" id="ratingStars"><button data-score="1">★</button><button data-score="2">★</button><button data-score="3">★</button><button data-score="4">★</button><button data-score="5">★</button></div><small id="ratingMessage">별점을 선택해주세요.</small></section>
+  <section class="me-sheet hidden" id="meSheet" aria-label="내 개인정보"><div class="me-head"><div><span>MY PROFILE</span><strong>내 정보와 여행 취향</strong></div><button id="closeMe" aria-label="닫기">×</button></div><form id="meForm"><label>프로필 한 줄 소개<input name="intro" maxlength="60" placeholder="예: 주말에는 새로운 동네를 걷는 사람" /></label><div class="me-grid"><label>활동 지역<input name="area" placeholder="예: 서울 마포구" /></label><label>직업/관심사<input name="work" placeholder="예: 디자이너" /></label></div><label>선호 여행지<input name="travel" placeholder="예: 제주, 오사카, 강릉" /></label><p class="travel-note">입력한 여행지는 이후 AI가 여행 취향이 비슷한 파트너와 여행·데이트 콘텐츠를 추천하는 데 활용됩니다.</p><button class="save-me" type="submit">내 정보 저장하기</button></form></section>
   <section class="signup-layer" id="onboarding" aria-modal="true" role="dialog">
     <div class="signup-widget">
       <p class="eyebrow">WELCOME TO SIDE BY SIDE</p><h1>먼저, 당신을<br />소개해주세요.</h1>
@@ -51,5 +53,6 @@
   <script src="./urgent-inventory.js"></script>
   <script src="./swipe.js"></script>
   <script src="./ratings.js"></script>
+  <script src="./profile-widget.js"></script>
 </body>
 </html>
