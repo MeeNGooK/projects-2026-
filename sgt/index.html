@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sidebyside — 새로운 연결</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <button class="reset" id="reset" title="처음부터 다시 등록하기">↺ <span>테스트 초기화</span></button>
+  <main class="experience" id="experience" tabindex="0">
+    <header class="hud"><a class="brand" href="#">side<span>by</span>side</a><p>오늘, 더 넓게 만나보세요</p><button class="profile-dot" aria-label="내 프로필">ME</button></header>
+    <section class="full-screen" id="screen" aria-live="polite"></section>
+    <div class="direction-cue left" id="cueLeft"><b>←</b><span>LEFT</span><strong>콘텐츠</strong></div>
+    <div class="direction-cue right" id="cueRight"><b>→</b><span>RIGHT</span><strong>새 인연</strong></div>
+    <div class="keyboard-guide"><kbd>←</kbd><span>콘텐츠</span><i></i><span>새 인연</span><kbd>→</kbd></div>
+    <div class="flash" id="flash"></div>
+  </main>
+  <div class="toast" id="toast"></div>
+  <section class="signup-layer" id="onboarding" aria-modal="true" role="dialog">
+    <div class="signup-widget">
+      <p class="eyebrow">WELCOME TO SIDE BY SIDE</p><h1>먼저, 당신을<br />소개해주세요.</h1>
+      <p class="intro">프로필에 공개할 정보 <b>세 가지</b>를 고르고 적어주세요.<br />선택하지 않은 정보는 표시되지 않아요.</p>
+      <form id="profileForm"><div class="choice-grid" id="choices"></div><div class="inputs" id="inputs"></div><button class="begin" type="submit">탐색 시작하기 <span>→</span></button></form>
+      <small>테스트 버전 · 좌상단 초기화 버튼으로 언제든 다시 시작할 수 있어요.</small>
+    </div>
+  </section>
+  <script src="./app.js"></script>
+</body>
+</html>
