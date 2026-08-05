@@ -6,6 +6,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./extras.css" />
+  <link rel="stylesheet" href="./extras2.css" />
 </head>
 <body>
   <button class="reset" id="reset" title="처음부터 다시 등록하기">↺ <span>테스트 초기화</span></button>
@@ -15,9 +17,20 @@
     <div class="direction-cue left" id="cueLeft"><b>←</b><span>LEFT</span><strong>콘텐츠</strong></div>
     <div class="direction-cue right" id="cueRight"><b>→</b><span>RIGHT</span><strong>새 인연</strong></div>
     <div class="keyboard-guide"><kbd>←</kbd><span>콘텐츠</span><i></i><span>새 인연</span><kbd>→</kbd></div>
+    <button class="chat-launch hidden" id="chatLaunch">💬 <span>매칭 채팅</span></button>
     <div class="flash" id="flash"></div>
   </main>
   <div class="toast" id="toast"></div>
+  <section class="comment-sheet hidden" id="commentSheet" aria-label="댓글">
+    <div class="sheet-head"><strong>댓글 <span id="commentCount">3</span></strong><button id="closeComments" aria-label="닫기">×</button></div>
+    <div class="comment-list" id="commentList"></div>
+    <form class="comment-form" id="commentForm"><input id="commentInput" placeholder="따뜻한 댓글을 남겨주세요" maxlength="80" /><button>등록</button></form>
+  </section>
+  <section class="chat-sheet hidden" id="chatSheet" aria-label="매칭 채팅">
+    <div class="chat-head"><div><span class="match-badge">MATCH</span><strong id="chatName">새 인연</strong></div><button id="closeChat" aria-label="닫기">×</button></div>
+    <div class="chat-log" id="chatLog"></div><p class="typing hidden" id="typing">상대가 입력 중...</p>
+    <form class="chat-form" id="chatForm"><input id="chatInput" placeholder="메시지 보내기" maxlength="120" /><button>↑</button></form>
+  </section>
   <section class="signup-layer" id="onboarding" aria-modal="true" role="dialog">
     <div class="signup-widget">
       <p class="eyebrow">WELCOME TO SIDE BY SIDE</p><h1>먼저, 당신을<br />소개해주세요.</h1>
