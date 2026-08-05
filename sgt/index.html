@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./extras.css" />
   <link rel="stylesheet" href="./extras2.css" />
   <link rel="stylesheet" href="./extras3.css" />
+  <link rel="stylesheet" href="./extras4.css" />
 </head>
 <body>
   <button class="reset" id="reset" title="처음부터 다시 등록하기">↺ <span>테스트 초기화</span></button>
@@ -35,6 +36,7 @@
   <section class="agent-layer hidden" id="agentLayer" aria-modal="true" role="dialog">
     <div class="agent-card"><div class="agent-orb">✦</div><p class="agent-kicker">SIDE BY SIDE AI AGENT</p><h2 id="agentTitle">특가 예약을 준비하고 있어요</h2><div class="agent-steps" id="agentSteps"></div><button class="agent-close hidden" id="agentClose">확인했어요</button></div>
   </section>
+  <section class="rating-sheet hidden" id="ratingSheet" aria-label="평점 남기기"><div class="rating-head"><strong>이용 경험은 어땠나요?</strong><button id="closeRating" aria-label="닫기">×</button></div><p id="ratingTarget">이용권</p><div class="rating-stars" id="ratingStars"><button data-score="1">★</button><button data-score="2">★</button><button data-score="3">★</button><button data-score="4">★</button><button data-score="5">★</button></div><small id="ratingMessage">별점을 선택해주세요.</small></section>
   <section class="signup-layer" id="onboarding" aria-modal="true" role="dialog">
     <div class="signup-widget">
       <p class="eyebrow">WELCOME TO SIDE BY SIDE</p><h1>먼저, 당신을<br />소개해주세요.</h1>
@@ -47,5 +49,6 @@
   <script src="./enhancements.js"></script>
   <script src="./urgent-inventory.js"></script>
   <script src="./swipe.js"></script>
+  <script src="./ratings.js"></script>
 </body>
 </html>
