@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./style.css" />
   <link rel="stylesheet" href="./extras.css" />
   <link rel="stylesheet" href="./extras2.css" />
+  <link rel="stylesheet" href="./extras3.css" />
 </head>
 <body>
   <button class="reset" id="reset" title="처음부터 다시 등록하기">↺ <span>테스트 초기화</span></button>
@@ -30,6 +31,9 @@
     <div class="chat-head"><div><span class="match-badge">MATCH</span><strong id="chatName">새 인연</strong></div><button id="closeChat" aria-label="닫기">×</button></div>
     <div class="chat-log" id="chatLog"></div><p class="typing hidden" id="typing">상대가 입력 중...</p>
     <form class="chat-form" id="chatForm"><input id="chatInput" placeholder="메시지 보내기" maxlength="120" /><button>↑</button></form>
+  </section>
+  <section class="agent-layer hidden" id="agentLayer" aria-modal="true" role="dialog">
+    <div class="agent-card"><div class="agent-orb">✦</div><p class="agent-kicker">SIDE BY SIDE AI AGENT</p><h2 id="agentTitle">특가 예약을 준비하고 있어요</h2><div class="agent-steps" id="agentSteps"></div><button class="agent-close hidden" id="agentClose">확인했어요</button></div>
   </section>
   <section class="signup-layer" id="onboarding" aria-modal="true" role="dialog">
     <div class="signup-widget">
