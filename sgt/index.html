@@ -1,59 +1,44 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sidebyside — 새로운 연결</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css" />
-  <link rel="stylesheet" href="./extras.css" />
-  <link rel="stylesheet" href="./extras2.css" />
-  <link rel="stylesheet" href="./extras3.css" />
-  <link rel="stylesheet" href="./extras4.css" />
-  <link rel="stylesheet" href="./extras5.css" />
-  <link rel="stylesheet" href="./extras6.css" />
-  <link rel="stylesheet" href="./extras7.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#e7ddc4" />
+  <title>sidebyside</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="sticky.css" />
 </head>
 <body>
-  <button class="reset" id="reset" title="처음부터 다시 등록하기">↺ <span>테스트 초기화</span></button>
-  <main class="experience" id="experience" tabindex="0">
-    <header class="hud"><a class="brand" href="#">side<span>by</span>side</a><p>오늘, 더 넓게 만나보세요</p><button class="profile-dot" id="meButton" aria-label="내 프로필">ME</button></header>
-    <section class="full-screen" id="screen" aria-live="polite"></section>
-    <div class="direction-cue left" id="cueLeft"><b>←</b><span>LEFT</span><strong>콘텐츠</strong></div>
-    <div class="direction-cue right" id="cueRight"><b>→</b><span>RIGHT</span><strong>새 인연</strong></div>
-    <div class="keyboard-guide"><kbd>←</kbd><span>콘텐츠</span><i></i><span>새 인연</span><kbd>→</kbd></div>
-    <button class="chat-launch hidden" id="chatLaunch">💬 <span>매칭 채팅</span></button>
-    <div class="flash" id="flash"></div>
+  <main class="phone" id="app">
+    <header class="topbar">
+      <button class="round-icon" id="reset" aria-label="처음부터 다시 시작">↺</button>
+      <div class="logo">side<span>by</span>side<small>little notes, big connections</small></div>
+      <button class="me-button" id="meButton" aria-label="내 정보">ME</button>
+    </header>
+
+    <section class="note-stage" id="stage" aria-live="polite">
+      <div class="direction direction-left"><b>←</b><span>LEFT</span><strong>콘텐츠</strong></div>
+      <div class="direction direction-right"><b>→</b><span>RIGHT</span><strong>새 인연</strong></div>
+      <div class="note-stack" id="noteStack"></div>
+      <p class="gesture-hint" id="gestureHint">노트를 밀어 다음 이야기를 만나보세요</p>
+    </section>
+
+    <nav class="bottom-nav" aria-label="탐색">
+      <button id="contentButton"><b>←</b><span>콘텐츠</span></button>
+      <i></i>
+      <button id="profileButton"><span>새 인연</span><b>→</b></button>
+    </nav>
   </main>
+
+  <section class="sheet hidden" id="commentSheet"><div class="sheet-head"><b>댓글 <span id="commentCount">3</span></b><button data-close="commentSheet">×</button></div><div id="commentList" class="comment-list"></div><form id="commentForm"><input id="commentInput" maxlength="80" placeholder="따뜻한 한마디를 남겨주세요" /><button>등록</button></form></section>
+  <section class="sheet hidden" id="chatSheet"><div class="sheet-head"><div><small>NEW CONNECTION</small><b id="chatName">채팅</b></div><button data-close="chatSheet">×</button></div><div id="chatLog" class="chat-log"></div><p class="typing hidden" id="typing">상대가 메모를 쓰고 있어요...</p><form id="chatForm"><input id="chatInput" maxlength="120" placeholder="메시지를 남겨보세요" /><button>↑</button></form></section>
+  <section class="sheet hidden" id="ratingSheet"><div class="sheet-head"><b>이 경험은 어땠나요?</b><button data-close="ratingSheet">×</button></div><p class="sheet-copy" id="ratingTarget">이용권</p><div id="stars" class="stars"><button data-score="1">★</button><button data-score="2">★</button><button data-score="3">★</button><button data-score="4">★</button><button data-score="5">★</button></div><p class="sheet-copy" id="ratingMessage">별점을 골라주세요.</p></section>
+  <section class="sheet hidden" id="meSheet"><div class="sheet-head"><div><small>MY LITTLE NOTE</small><b>내 정보와 여행 취향</b></div><button data-close="meSheet">×</button></div><form id="meForm" class="me-form"><label>한 줄 소개<input name="intro" placeholder="주말에는 새로운 동네를 걷는 사람" /></label><label>활동 지역<input name="area" placeholder="예: 서울 마포구" /></label><label>관심사<input name="interest" placeholder="예: 전시, 러닝, 커피" /></label><label>선호 여행지<input name="travel" placeholder="예: 제주, 오사카, 강릉" /></label><p>여행 취향은 나중에 AI가 비슷한 파트너와 장소를 추천할 때 사용해요.</p><button class="primary">저장하기</button></form></section>
+
+  <section class="onboarding" id="onboarding"><div class="welcome-note"><span class="tape"></span><p class="mono">WELCOME TO SIDE BY SIDE</p><h1>나를 소개할<br><em>세 가지</em>를 골라주세요.</h1><p>공개할 정보만 선택해요.<br>나머지는 내 메모에 안전하게 남아요.</p><div class="choice-row" id="choices"></div><form id="signupForm"><div id="signupInputs" class="signup-inputs"></div><button class="primary">스티키 노트 붙이기 →</button></form><small>테스트 시작은 좌상단 ↺ 버튼으로 초기화할 수 있어요.</small></div></section>
   <div class="toast" id="toast"></div>
-  <section class="comment-sheet hidden" id="commentSheet" aria-label="댓글">
-    <div class="sheet-head"><strong>댓글 <span id="commentCount">3</span></strong><button id="closeComments" aria-label="닫기">×</button></div>
-    <div class="comment-list" id="commentList"></div>
-    <form class="comment-form" id="commentForm"><input id="commentInput" placeholder="따뜻한 댓글을 남겨주세요" maxlength="80" /><button>등록</button></form>
-  </section>
-  <section class="chat-sheet hidden" id="chatSheet" aria-label="매칭 채팅">
-    <div class="chat-head"><div><span class="match-badge">MATCH</span><strong id="chatName">새 인연</strong></div><button id="closeChat" aria-label="닫기">×</button></div>
-    <div class="chat-log" id="chatLog"></div><p class="typing hidden" id="typing">상대가 입력 중...</p>
-    <form class="chat-form" id="chatForm"><input id="chatInput" placeholder="메시지 보내기" maxlength="120" /><button>↑</button></form>
-  </section>
-  <section class="agent-layer hidden" id="agentLayer" aria-modal="true" role="dialog">
-    <div class="agent-card"><div class="agent-orb">✦</div><p class="agent-kicker">SIDE BY SIDE AI AGENT</p><h2 id="agentTitle">특가 예약을 준비하고 있어요</h2><div class="agent-steps" id="agentSteps"></div><button class="agent-close hidden" id="agentClose">확인했어요</button></div>
-  </section>
-  <section class="rating-sheet hidden" id="ratingSheet" aria-label="평점 남기기"><div class="rating-head"><strong>이용 경험은 어땠나요?</strong><button id="closeRating" aria-label="닫기">×</button></div><p id="ratingTarget">이용권</p><div class="rating-stars" id="ratingStars"><button data-score="1">★</button><button data-score="2">★</button><button data-score="3">★</button><button data-score="4">★</button><button data-score="5">★</button></div><small id="ratingMessage">별점을 선택해주세요.</small></section>
-  <section class="me-sheet hidden" id="meSheet" aria-label="내 개인정보"><div class="me-head"><div><span>MY PROFILE</span><strong>내 정보와 여행 취향</strong></div><button id="closeMe" aria-label="닫기">×</button></div><form id="meForm"><label>프로필 한 줄 소개<input name="intro" maxlength="60" placeholder="예: 주말에는 새로운 동네를 걷는 사람" /></label><div class="me-grid"><label>활동 지역<input name="area" placeholder="예: 서울 마포구" /></label><label>직업/관심사<input name="work" placeholder="예: 디자이너" /></label></div><label>선호 여행지<input name="travel" placeholder="예: 제주, 오사카, 강릉" /></label><p class="travel-note">입력한 여행지는 이후 AI가 여행 취향이 비슷한 파트너와 여행·데이트 콘텐츠를 추천하는 데 활용됩니다.</p><button class="save-me" type="submit">내 정보 저장하기</button></form></section>
-  <section class="signup-layer" id="onboarding" aria-modal="true" role="dialog">
-    <div class="signup-widget">
-      <p class="eyebrow">WELCOME TO SIDE BY SIDE</p><h1>먼저, 당신을<br />소개해주세요.</h1>
-      <p class="intro">프로필에 공개할 정보 <b>세 가지</b>를 고르고 적어주세요.<br />선택하지 않은 정보는 표시되지 않아요.</p>
-      <form id="profileForm"><div class="choice-grid" id="choices"></div><div class="inputs" id="inputs"></div><button class="begin" type="submit">탐색 시작하기 <span>→</span></button></form>
-      <small>테스트 버전 · 좌상단 초기화 버튼으로 언제든 다시 시작할 수 있어요.</small>
-    </div>
-  </section>
-  <script src="./app.js"></script>
-  <script src="./enhancements.js"></script>
-  <script src="./urgent-inventory.js"></script>
-  <script src="./swipe.js"></script>
-  <script src="./ratings.js"></script>
-  <script src="./profile-widget.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
