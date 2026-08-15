@@ -37,8 +37,8 @@
   <section class="sheet hidden" id="ratingSheet"><div class="sheet-head"><b>이 경험은 어땠나요?</b><button data-close="ratingSheet">×</button></div><p class="sheet-copy" id="ratingTarget">이용권</p><div id="stars" class="stars"><button data-score="1">★</button><button data-score="2">★</button><button data-score="3">★</button><button data-score="4">★</button><button data-score="5">★</button></div><p class="sheet-copy" id="ratingMessage">별점을 골라주세요.</p></section>
   <section class="sheet hidden" id="meSheet"><div class="sheet-head"><div><small>MY LITTLE NOTE</small><b>내 정보와 여행 취향</b></div><button data-close="meSheet">×</button></div><form id="meForm" class="me-form"><label>한 줄 소개<input name="intro" placeholder="주말에는 새로운 동네를 걷는 사람" /></label><label>활동 지역<input name="area" placeholder="예: 서울 마포구" /></label><label>관심사<input name="interest" placeholder="예: 전시, 러닝, 커피" /></label><label>선호 여행지<input name="travel" placeholder="예: 제주, 오사카, 강릉" /></label><p>여행 취향은 나중에 AI가 비슷한 파트너와 장소를 추천할 때 사용해요.</p><button class="primary">저장하기</button></form></section>
 
-  <section class="onboarding" id="onboarding"><div class="welcome-note"><span class="tape"></span><p class="mono">WELCOME TO SIDE BY SIDE</p><h1>나를 소개할<br><em>세 가지</em>를 골라주세요.</h1><p>공개할 정보만 선택해요.<br>나머지는 내 메모에 안전하게 남아요.</p><div class="choice-row" id="choices"></div><form id="signupForm"><div id="signupInputs" class="signup-inputs"></div><button class="primary">스티키 노트 붙이기 →</button></form><small>테스트 시작은 좌상단 ↺ 버튼으로 초기화할 수 있어요.</small></div></section>
+  <section class="onboarding" id="onboarding"><div class="welcome-note"><span class="tape"></span><p class="mono">WELCOME TO SIDE BY SIDE</p><h1>나를 소개할<br><em>세 가지</em>를 골라주세요.</h1><p>공개할 정보만 선택해요.<br>나머지는 내 메모에 안전하게 남아요.</p><div class="choice-row" id="choices"></div><form id="signupForm" novalidate><div id="signupInputs" class="signup-inputs"></div><button class="primary" id="signupButton" type="button">스티키 노트 붙이기 →</button></form><small>테스트 시작은 좌상단 ↺ 버튼으로 초기화할 수 있어요.</small></div></section>
   <div class="toast" id="toast"></div>
-  <script src="app.js?v=onboarding-fix-2"></script>
+  <script src="app.js?v=onboarding-fix-3"></script>
 </body>
 </html>
