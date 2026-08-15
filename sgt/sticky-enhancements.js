@@ -29,7 +29,6 @@
     } else if (note.classList.contains('profile-note')) {
       const heart = note.querySelector('.heart');
       if (heart) { const replacement = heart.cloneNode(true); heart.replaceWith(replacement); replacement.textContent = '♡'; replacement.onclick = () => { uniqueAdd('likes', item); replacement.textContent = '♥'; replacement.classList.add('selected'); }; }
-      if (!note.querySelector('.hot')) { const hot = document.createElement('button'); hot.className = 'hot'; hot.type = 'button'; hot.textContent = '🔥 HOT'; hot.onclick = () => { uniqueAdd('hots', item); hot.classList.add('selected'); hot.textContent = '🔥 HOT!' }; note.append(hot); }
     }
   }
   function enhanceNotes() { document.querySelectorAll('.sticky:not(.back)').forEach(bindNote); }
@@ -37,6 +36,8 @@
   const observer = new MutationObserver(enhanceNotes);
   observer.observe($('#noteStack'), { childList: true, subtree: true });
   $('#meButton').addEventListener('click', () => setTimeout(renderCollections, 0));
+  $('#findButton').onclick = () => $('#findSheet').classList.remove('hidden');
+  document.querySelectorAll('.search-people article').forEach(card => card.querySelector('.search-hot').onclick = () => { const button = card.querySelector('.search-hot'); uniqueAdd('hots', { title: card.dataset.name, image: card.dataset.image, detail: 'Hot으로 저장한 인연' }); button.textContent = '🔥 Hot!'; button.classList.add('selected'); });
   document.addEventListener('click', event => { if (event.target.closest('#editMe')) setTimeout(renderCollections, 0); });
   enhanceNotes(); renderCollections(); startIntro();
 })();
