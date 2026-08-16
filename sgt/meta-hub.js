@@ -1,0 +1,46 @@
+(() => {
+  const $ = s => document.querySelector(s);
+  const readJson = key => JSON.parse(localStorage.getItem(key) || '[]');
+  const toast = text => { const box = $('#toast'); box.textContent = text; box.classList.add('show'); setTimeout(() => box.classList.remove('show'), 1800); };
+  const profile = () => JSON.parse(localStorage.getItem('sbs-me') || '{}');
+  const hasProfile = () => Object.values(profile()).some(Boolean);
+  const defaultPhoto = 'assets/teddy-tv.png';
+  const photo = () => localStorage.getItem('sbs-rep-photo') || defaultPhoto;
+  const points = () => +(localStorage.getItem('sbs-points') || 240);
+  const setPoints = value => localStorage.setItem('sbs-points', Math.max(0, value));
+  const people = items => items.length ? items : [];
+
+  function addPhotoField() {
+    const form = $('#meForm'); if (!form || form.querySelector('#repPhotoInput')) return;
+    const field = document.createElement('label'); field.className = 'rep-photo-field';
+    field.innerHTML = '나를 표현하는 사진<input id="repPhotoInput" type="file" accept="image/*" /><small>프로필 사진이 아니어도 괜찮아요. 선정적·폭력적·부적절한 이미지는 게시할 수 없습니다.</small>';
+    form.querySelector('.primary').before(field);
+    field.querySelector('input').addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; if (!file.type.startsWith('image/')) return toast('이미지 파일만 선택할 수 있어요.'); const reader = new FileReader(); reader.onload = () => { localStorage.setItem('sbs-rep-photo', reader.result); toast('표현 사진을 준비했어요. 저장하면 적용됩니다.'); }; reader.readAsDataURL(file); });
+  }
+  function displayHub() {
+    const data = profile(); $('#hubPhoto').src = photo(); $('#hubName').textContent = data.intro || '나의 작은 공간'; $('#hubArea').textContent = `⌖ ${data.area || '활동 지역 미설정'}`; $('#hubInterest').textContent = `# ${data.interest || '관심사 미설정'}`; $('.hub-top small').textContent = `MY SPACE · ${points()} P`; renderHub(); $('#meHub').classList.remove('hidden');
+  }
+  const pin = item => `<article class="hub-pin"><img src="${item.image || defaultPhoto}" alt="" /><b>${item.title}</b><small>${item.detail || '내가 모은 취향 메모'}</small></article>`;
+  function renderHub() {
+    const bookmarks = readJson('sbs-bookmarks'), bookings = readJson('sbs-bookings'), likes = readJson('sbs-likes'), hots = readJson('sbs-hots'), rooms = readJson('sbs-rooms');
+    $('#hubPins').innerHTML = [...bookmarks, ...bookings].length ? [...bookmarks, ...bookings].map(pin).join('') : '<p class="hub-note">저장한 콘텐츠와 예약이 여기에 핀처럼 쌓여요.</p>';
+    $('#hubLikes').innerHTML = likes.length ? likes.map(pin).join('') : '<p class="hub-note">하트를 누른 프로필이 취향 보드에 쌓여요.</p>';
+    $('#hubHot').innerHTML = people(hots).length ? hots.map((item, index) => { const mutual = item.mutual || item.title?.includes('윤슬'); return `<article class="match-card"><img src="${item.image || defaultPhoto}" alt="" /><div><b>${item.title}</b><small>${mutual ? '🔥 서로 Hot · 채팅 가능' : 'Hot을 보냈어요 · 상대 응답 대기 중'}</small></div>${mutual ? `<button class="open-match" data-name="${item.title}">채팅</button>` : '<span>대기중</span>'}</article>`; }).join('') : '<p class="hub-note">인연 찾기에서 Hot을 보내면, 서로의 호감이 닿은 인연이 여기에 보여요.</p>';
+    $('#hubRooms').innerHTML = rooms.length ? rooms.map(room => { const hours = Math.max(0, Math.ceil((room.expires - Date.now()) / 3600000)); return `<article class="room-card" data-id="${room.id}"><p>${room.title}</p><small>${room.target} · ${hours ? `${hours}시간 뒤 만료` : '유효기간 만료'}</small><div><button class="enter-room">워크스페이스 입장</button><button class="extend-room">15 P · 24시간 연장</button></div></article>`; }).join('') : '<p class="hub-note">아직 보낸 초대장이 없어요. 지정 대상 또는 공개 초대장을 만들어보세요.</p>';
+    document.querySelectorAll('.open-match').forEach(button => button.onclick = () => openMutualChat(button.dataset.name));
+    document.querySelectorAll('.enter-room').forEach(button => button.onclick = () => openWorkspace(button.closest('.room-card').dataset.id));
+    document.querySelectorAll('.extend-room').forEach(button => button.onclick = () => extendRoom(button.closest('.room-card').dataset.id));
+  }
+  function openMutualChat(name) { $('#chatName').textContent = name; $('#chatLog').innerHTML = '<div class="bubble them">서로 Hot이 닿았어요. 이제 편하게 이야기해요 :)</div>'; $('#chatSheet').classList.remove('hidden'); }
+  function openWorkspace(id) { const room = readJson('sbs-rooms').find(x => x.id === id); if (!room) return; $('#chatName').textContent = `워크스페이스 · ${room.title}`; $('#chatLog').innerHTML = `<div class="bubble them">초대장이 열렸어요. ${room.target}와 함께할 수 있는 기간 한정 대화방입니다.</div><div class="bubble them">만료 전에는 누구나 15 P로 24시간 연장할 수 있어요.</div>`; $('#chatSheet').classList.remove('hidden'); }
+  function extendRoom(id) { if (points() < 15) return toast('포인트가 부족해요.'); const rooms = readJson('sbs-rooms'); const room = rooms.find(x => x.id === id); if (!room) return; room.expires = Math.max(room.expires, Date.now()) + 86400000; setPoints(points() - 15); renderHub(); toast('워크스페이스를 24시간 연장했어요.'); }
+  function sendInvite() { if (points() < 40) return toast('포인트가 부족해요.'); const target = $('#inviteTarget').value === 'public' ? '공개 초대장' : $('#inviteTarget').value; const title = $('#inviteTitle').value.trim() || '함께 이야기할 사람?'; const duration = +$('#inviteDuration').value; const rooms = readJson('sbs-rooms'); rooms.unshift({ id: String(Date.now()), title, target, expires: Date.now() + duration * 3600000 }); localStorage.setItem('sbs-rooms', JSON.stringify(rooms)); setPoints(points() - 40); $('#inviteComposer').classList.add('hidden'); renderHub(); toast('초대장을 보냈어요.'); }
+  function selectTab(tab) { document.querySelectorAll('[data-hub-tab]').forEach(button => button.classList.toggle('selected', button.dataset.hubTab === tab)); document.querySelectorAll('[data-panel]').forEach(panel => panel.classList.toggle('hidden', panel.dataset.panel !== tab)); }
+  addPhotoField();
+  $('#meButton').addEventListener('click', event => { if (!hasProfile()) return; event.preventDefault(); event.stopImmediatePropagation(); displayHub(); }, true);
+  $('#closeHub').onclick = () => $('#meHub').classList.add('hidden');
+  $('#hubEdit').onclick = () => { $('#meHub').classList.add('hidden'); $('#meSheet').classList.remove('hidden'); $('#meView').classList.add('hidden'); $('#meForm').classList.remove('hidden'); };
+  document.querySelectorAll('[data-hub-tab]').forEach(button => button.onclick = () => selectTab(button.dataset.hubTab));
+  $('#newInvite').onclick = () => $('#inviteComposer').classList.toggle('hidden');
+  $('#sendInvite').onclick = sendInvite;
+})();
