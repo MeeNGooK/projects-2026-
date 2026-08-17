@@ -17,6 +17,13 @@ const fields = [['성명', '예: 홍길동'], ['출신지', '예: 전라도'], [
 const $ = selector => document.querySelector(selector);
 let selected = fields.slice(0, 3).map(([name]) => name);
 
+const legacyReset = document.querySelector('#reset');
+if (legacyReset) {
+  const logoutButton = legacyReset.cloneNode(true);
+  legacyReset.replaceWith(logoutButton);
+  logoutButton.onclick = async () => { await signOut(auth); };
+}
+
 document.body.insertAdjacentHTML('beforeend', `
   <section class="auth-gate" id="authGate" aria-live="polite">
     <div class="auth-note" id="authNote"></div>

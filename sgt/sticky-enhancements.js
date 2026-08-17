@@ -33,12 +33,11 @@
     }
   }
   function enhanceNotes() { document.querySelectorAll('.sticky:not(.back)').forEach(bindNote); }
-  function startIntro() { const splash = $('#introSplash'), note = $('#introNote'); if (!splash) return; setTimeout(() => note.classList.add('peel'), 900); setTimeout(() => splash.classList.add('finish'), 1450); setTimeout(() => splash.remove(), 1900); }
   const observer = new MutationObserver(enhanceNotes);
   observer.observe($('#noteStack'), { childList: true, subtree: true });
   $('#meButton').addEventListener('click', () => setTimeout(renderCollections, 0));
   $('#findButton').onclick = () => $('#findSheet').classList.remove('hidden');
   document.querySelectorAll('.search-people article').forEach(card => card.querySelector('.search-hot').onclick = () => { const button = card.querySelector('.search-hot'); uniqueAdd('hots', { title: card.dataset.name, image: card.dataset.image, detail: 'Hot으로 저장한 인연', mutual: card.dataset.name === '윤슬, 30' }); button.textContent = '🔥 Hot!'; button.classList.add('selected'); });
   document.addEventListener('click', event => { if (event.target.closest('#editMe')) setTimeout(renderCollections, 0); });
-  enhanceNotes(); renderCollections(); startIntro();
+  enhanceNotes(); renderCollections();
 })();
