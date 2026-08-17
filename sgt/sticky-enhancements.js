@@ -29,6 +29,7 @@
     } else if (note.classList.contains('profile-note')) {
       const heart = note.querySelector('.heart');
       if (heart) { const replacement = heart.cloneNode(true); heart.replaceWith(replacement); replacement.textContent = '♡'; replacement.onclick = () => { uniqueAdd('likes', item); replacement.textContent = '♥'; replacement.classList.add('selected'); }; }
+      if (!note.querySelector('.profile-hot')) { const hot = document.createElement('button'); hot.className = 'profile-hot'; hot.type = 'button'; hot.textContent = '🔥 Hot'; hot.onclick = () => { uniqueAdd('hots', { ...item, mutual: item.title.startsWith('서윤') }); hot.textContent = '🔥 Hot!'; hot.classList.add('selected'); }; note.append(hot); }
     }
   }
   function enhanceNotes() { document.querySelectorAll('.sticky:not(.back)').forEach(bindNote); }

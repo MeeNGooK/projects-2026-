@@ -36,9 +36,14 @@
   function extendRoom(id) { if (points() < 15) return toast('포인트가 부족해요.'); const rooms = readJson('sbs-rooms'); const room = rooms.find(x => x.id === id); if (!room) return; room.expires = Math.max(room.expires, Date.now()) + 86400000; setPoints(points() - 15); renderHub(); toast('워크스페이스를 24시간 연장했어요.'); }
   function sendInvite() { if (points() < 40) return toast('포인트가 부족해요.'); const target = $('#inviteTarget').value === 'public' ? '공개 초대장' : $('#inviteTarget').value; const title = $('#inviteTitle').value.trim() || '함께 이야기할 사람?'; const duration = +$('#inviteDuration').value; const rooms = readJson('sbs-rooms'); rooms.unshift({ id: String(Date.now()), title, target, expires: Date.now() + duration * 3600000 }); localStorage.setItem('sbs-rooms', JSON.stringify(rooms)); setPoints(points() - 40); $('#inviteComposer').classList.add('hidden'); renderHub(); toast('초대장을 보냈어요.'); }
   function selectTab(tab) { document.querySelectorAll('[data-hub-tab]').forEach(button => button.classList.toggle('selected', button.dataset.hubTab === tab)); document.querySelectorAll('[data-panel]').forEach(panel => panel.classList.toggle('hidden', panel.dataset.panel !== tab)); }
+  function renderInbox() { const hots = readJson('sbs-hots'); $('#inboxHotList').innerHTML = hots.length ? hots.map(item => { const mutual = item.mutual || item.title?.includes('윤슬') || item.title?.includes('서윤'); return `<article class="match-card"><img src="${item.image || defaultPhoto}" alt="" /><div><b>${item.title}</b><small>${mutual ? '🔥 서로 Hot · 지금 채팅 가능' : 'Hot을 보냈어요 · 상대의 Hot을 기다리는 중'}</small></div>${mutual ? `<button class="inbox-chat" data-name="${item.title}">채팅</button>` : '<span>대기중</span>'}</article>`; }).join('') : '<p class="hub-note">아직 Hot을 보낸 인연이 없어요. 프로필 카드의 🔥 Hot 버튼을 눌러보세요.</p>'; document.querySelectorAll('.inbox-chat').forEach(button => button.onclick = () => openMutualChat(button.dataset.name)); }
   addPhotoField();
   $('#meButton').addEventListener('click', event => { if (!hasProfile()) return; event.preventDefault(); event.stopImmediatePropagation(); displayHub(); }, true);
   $('#closeHub').onclick = () => $('#meHub').classList.add('hidden');
+  $('#contentButton').onclick = () => { $('#meHub').classList.add('hidden'); $('#inboxHub').classList.add('hidden'); };
+  $('#profileButton').onclick = () => { if (hasProfile()) displayHub(); else $('#meButton').click(); };
+  $('#inboxButton').onclick = () => { renderInbox(); $('#inboxHub').classList.remove('hidden'); };
+  $('#closeInbox').onclick = () => $('#inboxHub').classList.add('hidden');
   $('#hubEdit').onclick = () => { $('#meHub').classList.add('hidden'); $('#meSheet').classList.remove('hidden'); $('#meView').classList.add('hidden'); $('#meForm').classList.remove('hidden'); };
   document.querySelectorAll('[data-hub-tab]').forEach(button => button.onclick = () => selectTab(button.dataset.hubTab));
   $('#newInvite').onclick = () => $('#inviteComposer').classList.toggle('hidden');
