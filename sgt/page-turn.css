@@ -1,27 +1,25 @@
-/* 한 장만 보이는 노트와, 테이프를 떼듯 끝을 넘기는 효과 */
+/* 한 장만 보이는 노트와 책장 넘김 효과 */
 .note-stage{height:calc(100dvh - 151px);min-height:0;padding:16px 26px 8px}
 .sticky.back{display:none}
-.sticky{transform:rotate(0deg)}
-.polaroid{transform:rotate(0deg)}
-.profile-note.tone-blue{background:#dff1fa}
-.profile-note.tone-pink{background:#ffe2e4}
 .sticky.page-under{z-index:0;pointer-events:none}
-.sticky.page-turn{z-index:2!important;pointer-events:none;transition:none}
-.sticky.page-turn-content{animation:front-peel-content .68s linear forwards}
-.sticky.page-turn-profile{animation:front-peel-profile .68s linear forwards}
-.sticky.page-under.reveal-content{animation:reveal-content .68s ease-out forwards}
-.sticky.page-under.reveal-profile{animation:reveal-profile .68s ease-out forwards}
-.turn-flap{position:absolute;z-index:3;inset:12px 4px 10px;pointer-events:none;overflow:hidden;background:repeating-linear-gradient(0deg,#fff7d3 0 27px,#dfd0a14f 28px 30px);box-shadow:0 4px 12px #4d3d2c66}
-.turn-flap.flap-content{transform-origin:left center;animation:flap-content .68s cubic-bezier(.38,.04,.58,.86) forwards}
-.turn-flap.flap-profile{transform-origin:right center;animation:flap-profile .68s cubic-bezier(.38,.04,.58,.86) forwards}
-@keyframes front-peel-content{0%,22%{clip-path:inset(0)}100%{clip-path:inset(0 0 0 100%)}}
-@keyframes front-peel-profile{0%,22%{clip-path:inset(0)}100%{clip-path:inset(0 100% 0 0)}}
-@keyframes reveal-content{0%,19%{clip-path:inset(0 100% 0 0)}100%{clip-path:inset(0)}}
-@keyframes reveal-profile{0%,19%{clip-path:inset(0 0 0 100%)}100%{clip-path:inset(0)}}
-@keyframes flap-content{0%{clip-path:polygon(0 0,0 0,0 100%,0 100%);transform:translateX(0) rotate(0)}33%{clip-path:polygon(0 0,43% 0,29% 100%,0 100%);transform:translateX(2%) rotate(-.7deg)}72%{clip-path:polygon(0 0,100% 0,85% 100%,0 100%);transform:translateX(-8%) rotate(-1.2deg)}100%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);transform:translateX(-108%) rotate(-2deg)}}
-@keyframes flap-profile{0%{clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%);transform:translateX(0) rotate(0)}33%{clip-path:polygon(57% 0,100% 0,100% 100%,71% 100%);transform:translateX(-2%) rotate(.7deg)}72%{clip-path:polygon(0 0,100% 0,100% 100%,15% 100%);transform:translateX(8%) rotate(1.2deg)}100%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);transform:translateX(108%) rotate(2deg)}}
+.sticky.page-turn{z-index:2!important;pointer-events:none;backface-visibility:visible;transform-style:preserve-3d;transition:none}
+.sticky.page-turn-content{transform-origin:left center;animation:turn-content .66s cubic-bezier(.34,.02,.57,.82) forwards}
+.sticky.page-turn-profile{transform-origin:right center;animation:turn-profile .66s cubic-bezier(.34,.02,.57,.82) forwards}
+.sticky.page-under.reveal-content{animation:reveal-content .66s ease-out forwards}
+.sticky.page-under.reveal-profile{animation:reveal-profile .66s ease-out forwards}
+.sticky.page-turn:before{content:"";position:absolute;z-index:5;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,#2d251fbb 0%,#6c584380 12%,transparent 42%,#fff8d999 66%,#69564299 100%);animation:paper-shade .66s ease-out forwards}
+@keyframes turn-content{0%{transform:perspective(1100px) rotateY(0) rotate(-1.3deg)}42%{transform:perspective(1100px) translateX(-5%) rotateY(-48deg) skewY(1deg)}74%{transform:perspective(1100px) translateX(-16%) rotateY(-132deg) skewY(-1deg)}100%{transform:perspective(1100px) translateX(-105%) rotateY(-178deg) rotate(1deg)}}
+@keyframes turn-profile{0%{transform:perspective(1100px) rotateY(0) rotate(-1.3deg)}42%{transform:perspective(1100px) translateX(5%) rotateY(48deg) skewY(-1deg)}74%{transform:perspective(1100px) translateX(16%) rotateY(132deg) skewY(1deg)}100%{transform:perspective(1100px) translateX(105%) rotateY(178deg) rotate(1deg)}}
+@keyframes reveal-content{0%,31%{clip-path:inset(0 0 0 100%);transform:rotate(-1.3deg)}100%{clip-path:inset(0);transform:rotate(-1.3deg)}}
+@keyframes reveal-profile{0%,31%{clip-path:inset(0 100% 0 0);transform:rotate(-1.3deg)}100%{clip-path:inset(0);transform:rotate(-1.3deg)}}
+@keyframes paper-shade{0%,18%{opacity:.08}52%{opacity:.72}78%{opacity:.43}100%{opacity:0}}
 .bottom-nav{height:62px;margin:0 18px calc(env(safe-area-inset-bottom) + 11px);padding:8px 18px;gap:15px;background:#dec9a6;border:1px solid #a9906f;border-radius:3px;box-shadow:inset 0 2px 0 #fff3d5,3px 4px 0 #80684733}
 .bottom-nav:before{content:"";position:absolute;top:7px;left:13px;right:13px;border-top:1px solid #b49b78aa}
 .bottom-nav button{position:relative;z-index:1}
 .toast{bottom:92px}
 @media(max-height:690px){.note-stage{height:calc(100dvh - 144px);min-height:0}.bottom-nav{height:58px;margin-bottom:7px}}
+/* 안정화: 카드 위치·색상·기울기 고정 */
+.sticky{transform:rotate(0deg)}
+.polaroid{transform:rotate(0deg)}
+.profile-note.tone-blue{background:#dff1fa}
+.profile-note.tone-pink{background:#ffe2e4}
