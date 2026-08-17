@@ -1,0 +1,7 @@
+.auth-role-label{margin:0 0 6px;font:700 13px "Gaegu",cursive;color:#5d4c3d}
+.auth-role-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 0 12px}
+.auth-role-row button{display:grid;gap:2px;text-align:left;padding:10px;border:1px dashed #a99370;background:#fff8d3;color:#5a4b3a;cursor:pointer;font-family:"Noto Sans KR",sans-serif}
+.auth-role-row button.selected{background:#6ba9a4;color:#fff;border-style:solid;border-color:#477a76}
+.auth-role-row b{font:700 17px "Gaegu",cursive}
+.auth-role-row small{font:9px "Noto Sans KR",sans-serif;line-height:1.35}
+.hub-role{display:inline-block;margin-left:6px;vertical-align:middle;padding:3px 6px;background:#6ba9a4;color:#fff;font:700 9px "DM Mono",monospace;letter-spacing:.2px}

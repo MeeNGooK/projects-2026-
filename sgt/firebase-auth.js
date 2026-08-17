@@ -73,6 +73,7 @@ function signupAccountView() {
 }
 
 function profileView(account) {
+  const role = account.role || 'bear';
   const renderInputs = () => selected.map(name => {
     const example = fields.find(([field]) => field === name)[1];
     return `<label>${name}<input name="${name}" placeholder="${example}" required /></label>`;
@@ -81,6 +82,7 @@ function profileView(account) {
     <p class="auth-brand">port<span>bear</span></p><p class="auth-kicker">STEP 2 OF 2 · PROFILE NOTE</p>
     <h2>나를 소개할 세 가지</h2><p class="auth-copy">공개할 정보만 선택해요. 선택은 다시 눌러 해제할 수 있어요.</p>
     <div class="auth-choice-row" id="authChoices">${fields.map(([name]) => `<button type="button" data-name="${name}" class="${selected.includes(name) ? 'selected' : ''}">${name}</button>`).join('')}</div>
+    <p class="auth-role-label">이용 유형</p><div class="auth-role-row" id="authRoles"><button type="button" data-role="porter" class="${role === 'porter' ? 'selected' : ''}"><b>포터</b><small>콘텐츠 제작자 · 자영업자</small></button><button type="button" data-role="bear" class="${role === 'bear' ? 'selected' : ''}"><b>베어</b><small>일반 사용자</small></button></div>
     <form class="auth-form" id="profileForm"><div class="auth-profile-fields" id="authProfileFields">${renderInputs()}</div><button>가입하고 포트베어 시작하기 →</button></form>
     <button class="auth-switch" id="backAccount" type="button">← 계정 정보로 돌아가기</button><p class="auth-error" id="authError"></p>`;
   $('#backAccount').onclick = signupAccountView;
@@ -92,6 +94,10 @@ function profileView(account) {
     else return setStatus('세 가지만 선택할 수 있어요.');
     profileView(account);
   };
+  $('#authRoles').onclick = event => {
+    const button = event.target.closest('button'); if (!button) return;
+    profileView({ ...account, role: button.dataset.role });
+  };
   $('#profileForm').onsubmit = async event => {
     event.preventDefault(); if (selected.length !== 3) return setStatus('공개할 정보 세 가지를 골라주세요.');
     const profile = Object.fromEntries(new FormData(event.currentTarget));
@@ -99,16 +105,17 @@ function profileView(account) {
     setStatus('계정을 만들고 있어요...');
     try {
       const credential = await createUserWithEmailAndPassword(auth, account.email, account.password);
-      await saveProfile(credential.user, profile, true);
+      await saveProfile(credential.user, profile, true, role);
     } catch (error) { setStatus(message(error)); }
   };
 }
 
-async function saveProfile(user, profile, created = false) {
+async function saveProfile(user, profile, created = false, role = 'bear') {
   await setDoc(doc(db, 'users', user.uid), {
-    email: user.email, profile, selectedFields: Object.keys(profile), updatedAt: serverTimestamp(), ...(created ? { createdAt: serverTimestamp() } : {})
+    email: user.email, profile, selectedFields: Object.keys(profile), role, updatedAt: serverTimestamp(), ...(created ? { createdAt: serverTimestamp() } : {})
   }, { merge: true });
   localStorage.setItem('sbs-sticky-onboarding-v2', JSON.stringify(Object.values(profile)));
+  localStorage.setItem('sbs-role', role || 'bear');
   const existing = JSON.parse(localStorage.getItem('sbs-me') || '{}');
   localStorage.setItem('sbs-me', JSON.stringify({ ...existing, intro: existing.intro || profile.성명 || user.email.split('@')[0], area: existing.area || profile.출신지 || '' }));
   hideGate();
@@ -119,10 +126,11 @@ async function loadProfile(user) {
     const snapshot = await getDoc(doc(db, 'users', user.uid));
     if (snapshot.exists()) {
       const data = snapshot.data();
+      localStorage.setItem('sbs-role', data.role || 'bear');
       localStorage.setItem('sbs-sticky-onboarding-v2', JSON.stringify(Object.values(data.profile || {})));
       const existing = JSON.parse(localStorage.getItem('sbs-me') || '{}');
       localStorage.setItem('sbs-me', JSON.stringify({ ...existing, intro: existing.intro || data.profile?.성명 || user.email.split('@')[0], area: existing.area || data.profile?.출신지 || '' }));
-    }
+    } else localStorage.setItem('sbs-role', 'bear');
     hideGate();
   } catch (error) { setStatus('프로필을 불러오지 못했어요. 다시 로그인해 주세요.'); }
 }

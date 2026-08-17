@@ -18,7 +18,17 @@
     field.querySelector('input').addEventListener('change', event => { const file = event.target.files?.[0]; if (!file) return; if (!file.type.startsWith('image/')) return toast('이미지 파일만 선택할 수 있어요.'); const reader = new FileReader(); reader.onload = () => { localStorage.setItem('sbs-rep-photo', reader.result); toast('표현 사진을 준비했어요. 저장하면 적용됩니다.'); }; reader.readAsDataURL(file); });
   }
   function displayHub() {
-    const data = profile(); $('#hubPhoto').src = photo(); $('#hubName').textContent = data.intro || '나의 작은 공간'; $('#hubArea').textContent = `⌖ ${data.area || '활동 지역 미설정'}`; $('#hubInterest').textContent = `# ${data.interest || '관심사 미설정'}`; $('.hub-top small').textContent = `MY SPACE · ${points()} P`; renderHub(); $('#meHub').classList.remove('hidden');
+    const data = profile();
+    const role = localStorage.getItem('sbs-role') || 'bear';
+    $('#hubPhoto').src = photo();
+    const name = $('#hubName');
+    name.textContent = data.intro || '나의 작은 공간';
+    const badge = document.createElement('small');
+    badge.className = 'hub-role';
+    badge.textContent = role === 'porter' ? 'PORTER' : 'BEAR';
+    badge.title = role === 'porter' ? '포터 · 콘텐츠 제작자/자영업자' : '베어 · 일반 사용자';
+    name.append(' ', badge);
+    $('#hubArea').textContent = `⌖ ${data.area || '활동 지역 미설정'}`; $('#hubInterest').textContent = `# ${data.interest || '관심사 미설정'}`; $('.hub-top small').textContent = `MY SPACE · ${points()} P`; renderHub(); $('#meHub').classList.remove('hidden');
   }
   const pin = item => `<article class="hub-pin"><img src="${item.image || defaultPhoto}" alt="" /><b>${item.title}</b><small>${item.detail || '내가 모은 취향 메모'}</small></article>`;
   function renderHub() {
