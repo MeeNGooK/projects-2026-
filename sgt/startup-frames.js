@@ -4,7 +4,7 @@
   const hint = document.querySelector('#frameIntroHint');
   if (!intro || !button) return;
   let started = false;
-  const delays = [0, 270, 170, 115, 95];
+  const delays = [0, 430, 760, 1040, 1270];
   button.addEventListener('click', () => {
     if (started) return;
     started = true;
@@ -14,12 +14,12 @@
         const frame = button.querySelector(`[data-frame="${index + 1}"]`);
         if (!frame) return;
         frame.classList.add('peeling');
-        setTimeout(() => frame.remove(), 620);
+        setTimeout(() => frame.remove(), 360);
       }, delay);
     });
     setTimeout(() => {
       intro.classList.add('done');
       setTimeout(() => intro.remove(), 420);
-    }, delays.at(-1) + 650);
+    }, delays.at(-1) + 410);
   });
 })();
