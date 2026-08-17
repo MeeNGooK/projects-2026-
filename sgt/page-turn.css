@@ -1,6 +1,10 @@
 /* 한 장만 보이는 노트와, 테이프를 떼듯 끝을 넘기는 효과 */
 .note-stage{height:calc(100dvh - 151px);min-height:0;padding:16px 26px 8px}
 .sticky.back{display:none}
+.sticky{transform:rotate(0deg)}
+.polaroid{transform:rotate(0deg)}
+.profile-note.tone-blue{background:#dff1fa}
+.profile-note.tone-pink{background:#ffe2e4}
 .sticky.page-under{z-index:0;pointer-events:none}
 .sticky.page-turn{z-index:2!important;pointer-events:none;transition:none}
 .sticky.page-turn-content{animation:front-peel-content .68s linear forwards}
