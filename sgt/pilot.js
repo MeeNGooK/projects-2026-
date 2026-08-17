@@ -40,7 +40,7 @@
   function openQr(reservation, offer) {
     let modal = $('#pilotQrModal');
     if (!modal) { document.body.insertAdjacentHTML('beforeend', '<section id="pilotQrModal" class="sheet"><div class="sheet-head"><b>현장 사용 QR</b><button id="closePilotQr">×</button></div><div class="qr-ticket"><div class="qr-code"></div><p id="pilotQrTitle"></p><small id="pilotQrCode"></small><b>1회 사용 · 중복 사용 방지</b></div><button id="usePilotQr" class="qr-action">QR 사용 처리</button></section>'); modal = $('#pilotQrModal'); $('#closePilotQr').onclick = () => modal.remove(); }
-    $('#pilotQrTitle').textContent = offer.title; $('#pilotQrCode').textContent = reservation.code; $('#usePilotQr').classList.toggle('used', reservation.used); $('#usePilotQr').textContent = reservation.used ? '이미 사용 완료' : '현장 QR 사용 처리'; $('#usePilotQr').onclick = () => useQr(reservation.id, offer.id);
+    $('#pilotQrTitle').textContent = offer.title; $('#pilotQrCode').textContent = reservation.code; $('#usePilotQr').dataset.reservation = reservation.id; $('#usePilotQr').dataset.offer = offer.id; $('#usePilotQr').classList.toggle('used', reservation.used); $('#usePilotQr').textContent = reservation.used ? '이미 사용 완료' : '현장 QR 사용 처리';
   }
   function useQr(reservationId, offerId) {
     const reservation = state.reservations.find(x => x.id === reservationId), offer = state.offers.find(x => x.id === offerId); if (!reservation || !offer) return;
@@ -56,5 +56,5 @@
   $('#closePilot').onclick = () => $('#pilotHub').classList.add('hidden');
   $('#pilotReset').onclick = () => { localStorage.removeItem(key); state = get(); render(); toast('시운전 데이터를 초기화했어요.'); };
   $('#saveConsent').onclick = () => { state.consent.personal = $('#consentPersonal').checked; state.consent.activity = $('#consentActivity').checked; save(); render(); toast('동의 설정을 저장했어요.'); };
-  $('#buildCourse').onclick = course; $('#issueForm').addEventListener('submit', issue); render();
+  $('#buildCourse').onclick = course; $('#issueForm').addEventListener('submit', issue); document.addEventListener('click', event => { if (event.target.id === 'usePilotQr') useQr(event.target.dataset.reservation, event.target.dataset.offer); }); render();
 })();
