@@ -3,23 +3,23 @@
   const button = document.querySelector('#frameIntroButton');
   const hint = document.querySelector('#frameIntroHint');
   if (!intro || !button) return;
-  let current = 1;
-  let busy = false;
+  let started = false;
+  const delays = [0, 270, 170, 115, 95];
   button.addEventListener('click', () => {
-    if (busy) return;
-    const frame = button.querySelector(`[data-frame="${current}"]`);
-    if (!frame) return;
-    busy = true;
-    frame.classList.add('peeling');
-    if (current < 5) hint.textContent = `TOUCH TO PEEL · ${current + 1} / 5`;
+    if (started) return;
+    started = true;
+    hint.textContent = 'PEELING THE NOTE...';
+    delays.forEach((delay, index) => {
+      setTimeout(() => {
+        const frame = button.querySelector(`[data-frame="${index + 1}"]`);
+        if (!frame) return;
+        frame.classList.add('peeling');
+        setTimeout(() => frame.remove(), 620);
+      }, delay);
+    });
     setTimeout(() => {
-      frame.remove();
-      current += 1;
-      busy = false;
-      if (current === 6) {
-        intro.classList.add('done');
-        setTimeout(() => intro.remove(), 420);
-      }
-    }, 620);
+      intro.classList.add('done');
+      setTimeout(() => intro.remove(), 420);
+    }, delays.at(-1) + 650);
   });
 })();
